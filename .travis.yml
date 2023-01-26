@@ -9,3 +9,15 @@ before_install:
     - docker build -t csuchqwork/sample-app -f Dockerfile.dev .
 script:     
     - docker run -e CI=true csuchqwork/sample-app npm run test -- --coverage --watchAll=false
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-1" ### AWS region of your choice
+  app: "My_React_App" ### Your EB App name
+  env: "Myreactapp-env" ### Your EB App environment name
+  bucket_name: "elasticbeanstalk-us-east-1-236158853494" ### S3 bucket name
+  bucket_path: "EBApptest" ### S3 folder name under S3 bucket above
+  on:
+    branch: main
+  access_key_id: "$AWS_ACCESS_KEY"
+  secret_access_key: "$AWS_SECRET_KEY"
